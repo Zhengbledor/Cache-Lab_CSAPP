@@ -145,6 +145,25 @@ void transpose_submit_64_64(int M, int N, int A[N][M], int B[M][N])
     }
 }
 
+char transpose_submit_61_67_desc[] = "Transpose submission 61*67";
+void transpose_submit_61_67(int M, int N, int A[N][M], int B[M][N])
+{
+    int i, j, k, l;
+    int step = 17;
+    for (i = 0; i < 61; i += step)
+    {
+        for (j = 0; j < 67; j += step)
+        {
+            for (k = j; k < j + step && k < 67; k++)
+            {
+                for (l = i; l < i + step && l < 61; l++)
+                {
+                    B[l][k] = A[k][l];
+                }
+            }
+        }
+    }
+}
 /* 
  * transpose_submit - This is the solution transpose function that you
  *     will be graded on for Part B of the assignment. Do not change
@@ -163,18 +182,9 @@ void transpose_submit(int M, int N, int A[N][M], int B[M][N])
     {
         transpose_submit_64_64(M, N, A, B);
     }
-    else
+    else if (M == 61 &&N == 67)
     {
-        int i, j, tmp;
-
-        for (i = 0; i < N; i++)
-        {
-            for (j = 0; j < M; j++)
-            {
-                tmp = A[i][j];
-                B[j][i] = tmp;
-            }
-        }
+        transpose_submit_61_67(M, N, A, B);
     }
 }
 
